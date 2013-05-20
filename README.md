@@ -1,5 +1,8 @@
 # A Bloom Filter for PHP #
 
+[![Build Status](https://travis-ci.org/pleonasm/bloom-filter.png?branch=master)](https://travis-ci.org/pleonasm/bloom-filter)
+[![Coverage Status](https://coveralls.io/repos/pleonasm/bloom-filter/badge.png)](https://coveralls.io/r/pleonasm/bloom-filter)
+
 This is a well tested implementation of a [Bloom Filter](http://en.wikipedia.org/wiki/Bloom_filter)
 for PHP. It has the following features:
 
