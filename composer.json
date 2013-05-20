@@ -20,7 +20,7 @@
         "phpunit/phpunit": "*",
         "phpunit/php-invoker": ">=1.0.0,<1.2.0",
         "squizlabs/php_codesniffer": "*",
-        "satooshi/php-coveralls": "*"
+        "satooshi/php-coveralls": "*@dev"
     },
     "autoload": {
         "psr-0": { "Pleo": "src/" }
