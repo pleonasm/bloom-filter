@@ -1,0 +1,28 @@
+{
+    "name": "pleonasm/bloom-filter",
+    "description": "A pure PHP implementation of a Bloom Filter",
+    "keywords": ["bloom filter", "sets"],
+    "license": "BSD-2-Clause",
+    "authors": [
+        {
+            "name": "Matthew Nagi",
+            "email": "matthew.nagi@base-2.net"
+        }
+    ],
+    "support": {
+        "email": "matthew.nagi@base-2.net",
+        "issues": "https://github.com/pleonasm/bloom-filter/issues"
+    },
+    "require": {
+    },
+    "require-dev": {
+        "ext-xdebug": ">=2.2.0",
+        "phpunit/phpunit": "*",
+        "phpunit/php-invoker": ">=1.0.0,<1.2.0",
+        "squizlabs/php_codesniffer": "*",
+        "satooshi/php-coveralls": "*"
+    },
+    "autoload": {
+        "psr-0": { "Pleo": "src/" }
+    }
+}
