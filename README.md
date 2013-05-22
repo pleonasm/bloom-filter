@@ -32,3 +32,7 @@ Run `composer install`.
 ## Usage ##
 
 Not done coding yet...
+
+## License ##
+
+You can find the license for this code in [the LICENSE file](LICENSE).

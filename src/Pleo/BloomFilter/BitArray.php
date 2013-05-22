@@ -1,6 +1,7 @@
 <?php
 /**
- * @license https://raw.github.com/pleonasm/bloom-filter/master/LICENSE
+ * @copyright 2013 Matthew Nagi
+ * @license http://opensource.org/licenses/BSD-2-Clause BSD 2-Clause License
  */
 
 namespace Pleo\BloomFilter;
