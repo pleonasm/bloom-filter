@@ -43,8 +43,6 @@ class BitArray implements ArrayAccess, Countable
 
     /**
      * @param int $offset
-     * @throws UnexpectedValueException
-     * @throws RangeException
      * @return bool
      */
     public function offsetExists($offset)
