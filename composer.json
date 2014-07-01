@@ -16,9 +16,8 @@
     "require": {
     },
     "require-dev": {
-        "ext-xdebug": ">=2.2.0",
         "phpunit/phpunit": "*",
-        "phpunit/php-invoker": ">=1.0.0,<1.2.0",
+        "phpunit/php-invoker": "*",
         "squizlabs/php_codesniffer": "*",
         "satooshi/php-coveralls": "dev-master@dev"
     },
