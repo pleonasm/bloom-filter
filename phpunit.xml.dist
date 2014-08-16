@@ -13,7 +13,7 @@
          stopOnFailure="false"
          stopOnIncomplete="false"
          stopOnSkipped="false"
-         strict="true"
+         strict="false"
          verbose="true">
 
   <logging>
