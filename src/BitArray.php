@@ -69,12 +69,12 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @param string $data The raw bytes of the bit array
      * @param int $bitLength
      */
-    public function __construct(&$data, $bitLength)
+    public function __construct($data, $bitLength)
     {
         // need to check string here
         // need to check or truncate to $bitlength
         $this->length = $bitLength;
-        $this->data = &$data;
+        $this->data = $data;
     }
 
     /**
