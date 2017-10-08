@@ -1,5 +1,6 @@
 {
     "name": "pleonasm/bloom-filter",
+    "version": "1.0.0",
     "description": "A pure PHP implementation of a Bloom Filter",
     "keywords": ["bloom filter", "sets", "bloom", "filter"],
     "license": "BSD-2-Clause",
