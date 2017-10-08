@@ -78,10 +78,7 @@ serialization.
 
 ## Requirements ##
 
-The package.json file has the requirement for PHP >=5.6, however the code very
-well may work in for PHP >=5.4, I just can't easily get the CI tools to work
-for PHP 5.4 through 7.1 so I just left it at the currently supported version
-of PHP.
+This project requires PHP 5.4 or newer.
 
 ## License ##
 
