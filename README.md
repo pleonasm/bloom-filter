@@ -55,7 +55,7 @@ $bf->exists('item3'); // true
 // being true as long as the amount of items in the filter are < 100000
 $bf->exists('non-existing-item');
 
-$serialized = json_encode($bf);
+$serialized = json_encode($bf); // you can store/transfer this places!
 unset($bf);
 
 $bf = BloomFilter::initFromJson(json_decode($serialized, true));
@@ -63,6 +63,18 @@ unset($serialized);
 
 // The $bf variable is right back to where it was before serialization
 ```
+
+### Warnings On Serialization ###
+
+As a note: using `json_encode()` on a bloom filter object should work across
+most systems. You can run in to trouble if are moving the filter between 64
+and 32 bit systems (that will outright not work) or moving between
+little-endian and big-endian systems (that should work, but I haven't tested
+it).
+
+Also note that `json_encode()` will take the binary bit array and base64
+encode it. So if you have a large array, it will get about 33% bigger on
+serialization.
 
 ## Requirements ##
 
