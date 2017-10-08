@@ -21,6 +21,7 @@
         "phpunit/php-invoker": "^1.1",
         "doctrine/instantiator": ">=1.0.5 <=1.0.99",
         "phpdocumentor/reflection-docblock": ">=2.0.5 <=2.99.99",
+        "phpunit/php-token-stream": ">=1.4.11 <2.0.0",
         "satooshi/php-coveralls": "dev-master@dev"
     },
     "autoload": {
