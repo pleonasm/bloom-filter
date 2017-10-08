@@ -70,7 +70,7 @@ class HasherList implements JsonSerializable
     {
         $returns = [];
         for ($i = 0; $i < $this->count; $i++) {
-            $rawHash = hash_hmac($this->algo, $value, $i, true);
+            $rawHash = hash_hmac($this->algo, $value, (string) $i, true);
             $hashParts = unpack('n*', $rawHash);
             $hashParts[1] &= 0x7FFF;
             $num = 0;
