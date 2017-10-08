@@ -1,7 +1,7 @@
 {
     "name": "pleonasm/bloom-filter",
     "description": "A pure PHP implementation of a Bloom Filter",
-    "keywords": ["bloom filter", "sets"],
+    "keywords": ["bloom filter", "sets", "bloom", "filter"],
     "license": "BSD-2-Clause",
     "authors": [
         {
@@ -14,14 +14,14 @@
         "issues": "https://github.com/pleonasm/bloom-filter/issues"
     },
     "require": {
+        "php": ">=5.4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
-        "phpunit/php-invoker": "*",
-        "squizlabs/php_codesniffer": "*",
+        "phpunit/phpunit": "^6.3",
+        "phpunit/php-invoker": "^1.1",
         "satooshi/php-coveralls": "dev-master@dev"
     },
     "autoload": {
-        "psr-0": { "Pleo": "src/" }
+        "psr-4": { "Pleo\\BloomFilter\\": "src/" }
     }
 }

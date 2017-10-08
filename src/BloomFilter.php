@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2013 Matthew Nagi
+ * @copyright 2013,2017 Matthew Nagi
  * @license http://opensource.org/licenses/BSD-2-Clause BSD 2-Clause License
  */
 
@@ -13,26 +13,41 @@ use JsonSerializable;
  */
 class BloomFilter implements JsonSerializable
 {
+    const HASH_ALGO = 'sha1';
+
     /**
      * @var BitArray
      */
     private $ba;
 
     /**
+     * @var HasherList
+     */
+    private $hashers;
+
+    /**
+     * @param array $data
+     * @return BloomFilter
+     */
+    public static function initFromJson(array $data)
+    {
+        return new static(BitArray::initFromJson($data['bit_array']), HasherList::initFromJson($data['hashers']));
+    }
+
+    /**
      * @param int $approxSize
      * @param float $falsePosProb
      * @return BloomFilter
      */
-    public static function create($approxSize, $falsePosProb)
+    public static function init($approxSize, $falsePosProb)
     {
         $baSize = self::optimalBitArraySize($approxSize, $falsePosProb);
-        $ba = new BitArray($baSize);
+        $ba = BitArray::init($baSize);
         $hasherAmt = self::optimalHasherCount($approxSize, $baSize);
-        $hashers = [];
-        for ($i = 0; $i < $hasherAmt; $i++) {
-            $hashers[] = self::createHasher('crc32', $i);
-        }
-        return new self($ba, $hashers);
+
+        $hashers = new HasherList(static::HASH_ALGO, $hasherAmt, $baSize);
+
+        return new static($ba, $hashers);
     }
 
     /**
@@ -56,24 +71,12 @@ class BloomFilter implements JsonSerializable
     }
 
     /**
-     * @param string $algo
-     * @param string|int $seed
-     * @return callable
-     */
-    private static function createHasher($algo, $seed)
-    {
-        return function ($item, $baSize) use ($algo, $seed) {
-            return abs(hexdec(hash($algo, $seed . $item))) % ($baSize - 1);
-        };
-    }
-
-    /**
      * In general, do not use the constructor directly
      *
      * @param BitArray $ba
-     * @param callable[] $hashers
+     * @param HasherList $hashers
      */
-    public function __construct(BitArray $ba, array $hashers)
+    public function __construct(BitArray $ba, HasherList $hashers)
     {
         $this->ba = $ba;
         $this->hashers = $hashers;
@@ -81,13 +84,13 @@ class BloomFilter implements JsonSerializable
 
     /**
      * @param string $item
-     * @return null
+     * @return void
      */
     public function add($item)
     {
-        foreach ($this->hashers as $hasher) {
-            $res = call_user_func($hasher, $item, $this->ba->count());
-            $this->ba[$res] = true;
+        $vals = $this->hashers->hash($item);
+        foreach ($vals as $bitLoc) {
+            $this->ba[$bitLoc] = true;
         }
     }
 
@@ -98,9 +101,9 @@ class BloomFilter implements JsonSerializable
     public function exists($item)
     {
         $exists = true;
-        foreach ($this->hashers as $hasher) {
-            $res = call_user_func($hasher, $item, $this->ba->count());
-            if (!$this->ba[$res]) {
+        $vals = $this->hashers->hash($item);
+        foreach ($vals as $bitLoc) {
+            if (!$this->ba[$bitLoc]) {
                 $exists = false;
                 break;
             }
@@ -109,9 +112,13 @@ class BloomFilter implements JsonSerializable
     }
 
     /**
+     * @return array
      */
     public function jsonSerialize()
     {
-
+        return [
+            'bit_array' => $this->ba,
+            'hashers' => $this->hashers,
+        ];
     }
 }

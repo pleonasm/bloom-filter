@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2013 Matthew Nagi
+ * @copyright 2013,2017 Matthew Nagi
  * @license http://opensource.org/licenses/BSD-2-Clause BSD 2-Clause License
  */
 
@@ -8,13 +8,14 @@ namespace Pleo\BloomFilter;
 
 use ArrayAccess;
 use Countable;
+use JsonSerializable;
 use RangeException;
 use UnexpectedValueException;
 
 /**
  * Provides PHP access semantics to an arbitrary length array of bits
  */
-class BitArray implements ArrayAccess, Countable
+class BitArray implements ArrayAccess, Countable, JsonSerializable
 {
     const BITS_IN_BYTE = 8;
 
@@ -29,16 +30,51 @@ class BitArray implements ArrayAccess, Countable
     private $data;
 
     /**
-     * @param int $length The length of the array
-     * @throws UnexpectedValueException
-     * @throws RangeException
+     * @param array $decodedJson Should be passed the return from
+     *    $this->jsonSerialize() to re-create the object.
+     * @return BitArray
      */
-    public function __construct($length)
+    public static function initFromJson(array $decodedJson)
     {
-        $this->isOffset($length, false);
-        $this->length = $length;
+        return new static(base64_decode($decodedJson['arr']), $decodedJson['len']);
+    }
 
-        $this->data = str_repeat(chr(0), $this->length);
+    /**
+     * @param int $length The length in bits of the bit array
+     * @return BitArray
+     */
+    public static function init($length)
+    {
+        static::checkPositiveInt($length);
+        $lengthInBytes = (int) ceil($length / static::BITS_IN_BYTE);
+        $data = str_repeat(chr(0), $lengthInBytes);
+        return new static($data, $length);
+    }
+
+    /**
+     * @param mixed $val
+     */
+    private static function checkPositiveInt($val)
+    {
+        if (!is_int($val)) {
+            throw new UnexpectedValueException('Value must be an integer.');
+        }
+
+        if ($val < 0) {
+            throw new RangeException('Value must be greater than zero.');
+        }
+    }
+
+    /**
+     * @param string $data The raw bytes of the bit array
+     * @param int $bitLength
+     */
+    public function __construct(&$data, $bitLength)
+    {
+        // need to check string here
+        // need to check or truncate to $bitlength
+        $this->length = $bitLength;
+        $this->data = &$data;
     }
 
     /**
@@ -70,7 +106,7 @@ class BitArray implements ArrayAccess, Countable
      */
     public function offsetGet($offset)
     {
-        $this->isOffset($offset);
+        $this->isValidOffset($offset);
 
         $byte = $this->offsetToByte($offset);
         $byte = ord($this->data[$byte]);
@@ -84,11 +120,11 @@ class BitArray implements ArrayAccess, Countable
      * @param bool $value
      * @throws UnexpectedValueException
      * @throws RangeException
-     * @return null
+     * @return void
      */
     public function offsetSet($offset, $value)
     {
-        $this->isOffset($offset);
+        $this->isValidOffset($offset);
         $value = (bool) $value;
 
         $obyte = $this->offsetToByte($offset);
@@ -108,7 +144,7 @@ class BitArray implements ArrayAccess, Countable
      * @param int $offset
      * @throws UnexpectedValueException
      * @throws RangeException
-     * @return null
+     * @return void
      */
     public function offsetUnset($offset)
     {
@@ -118,7 +154,7 @@ class BitArray implements ArrayAccess, Countable
     /**
      * Returns the length (amount of bits) of the bit array
      *
-     * @return int
+     * @return int Returns the total length in bits of the array
      */
     public function count()
     {
@@ -126,23 +162,24 @@ class BitArray implements ArrayAccess, Countable
     }
 
     /**
+     * @return int Returns the total byte length of the bit array
+     */
+    public function byteLength()
+    {
+        return strlen($this->data);
+    }
+
+    /**
      * @param mixed $val
-     * @param bool $checkUpperBound
      * @throws RangeException
      * @throws UnexpectedValueException
-     * @return null
+     * @return void
      */
-    private function isOffset($val, $checkUpperBound = true)
+    private function isValidOffset($val)
     {
-        if (!is_int($val)) {
-            throw new UnexpectedValueException('Value must be an integer.');
-        }
+        static::checkPositiveInt($val);
 
-        if ($val < 0) {
-            throw new RangeException('Value must be greater than zero.');
-        }
-
-        if ($checkUpperBound && $val >= $this->length) {
+        if ($val >= $this->length) {
             throw new RangeException('Value must be less than array length - 1.');
         }
     }
@@ -163,5 +200,16 @@ class BitArray implements ArrayAccess, Countable
     private function finalBitPos($offset)
     {
         return (int) pow(2, $offset % self::BITS_IN_BYTE);
+    }
+
+    /**
+     * @return array
+     */
+    public function jsonSerialize()
+    {
+        return [
+            'len' => $this->length,
+            'arr' => base64_encode($this->data)
+        ];
     }
 }

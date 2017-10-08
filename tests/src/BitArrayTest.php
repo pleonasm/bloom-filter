@@ -1,22 +1,25 @@
 <?php
 /**
- * @copyright 2013 Matthew Nagi
+ * @copyright 2013,2017 Matthew Nagi
  * @license http://opensource.org/licenses/BSD-2-Clause BSD 2-Clause License
  */
 
 namespace Pleo\BloomFilter;
 
-use PHPUnit_Framework_TestCase;
+use PHPUnit\Framework\TestCase;
 use RangeException;
 use UnexpectedValueException;
 
-class BitArrayTest extends PHPUnit_Framework_TestCase
+class BitArrayTest extends TestCase
 {
+    /**
+     * @var BitArray
+     */
     private $arr;
 
     public function setUp()
     {
-        $this->arr = new BitArray(12);
+        $this->arr = BitArray::init(12);
         $this->arr[3] = true;
         $this->arr[4] = true;
         $this->arr[5] = true;
@@ -25,27 +28,27 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      * @expectedException RangeException
      */
-    public function testThrowErrorIfBitArrayConstructedWithNegativeLength()
+    public function testThrowErrorIfBitArrayInitializedWithNegativeLength()
     {
-        new BitArray(-3);
+        BitArray::init(-3);
     }
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      * @expectedException UnexpectedValueException
      */
     public function testThrowErrorIfBitArrayConstrutectedWithNonIntegerLength()
     {
-        new BitArray('big');
+        BitArray::init('big');
     }
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      * @expectedException RangeException
      */
     public function testThrowErrorIfAccessGivenNegativeLength()
@@ -55,7 +58,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      * @expectedException RangeException
      */
     public function testThrowErrorIfAccessGivenOffsetGreaterThanLength()
@@ -65,7 +68,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      * @expectedException UnexpectedValueException
      */
     public function testThrowErrorIfAccessGivenNonIntegerLength()
@@ -75,7 +78,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testIssetReturnsFalseForValueLessThanBounds()
     {
@@ -84,7 +87,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testIssetReturnsFalseForValueGreaterThanBounds()
     {
@@ -93,7 +96,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testIssetReturnsFalseForNonIntegerOffset()
     {
@@ -102,7 +105,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      * @expectedException RangeException
      */
     public function testThrowErrorIfUnsetGivenNegativeLength()
@@ -112,7 +115,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      * @expectedException RangeException
      */
     public function testThrowErrorIfUnsetGivenOffsetGreaterThanLength()
@@ -122,7 +125,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      * @expectedException UnexpectedValueException
      */
     public function testThrowErrorIfUnsetGivenNonIntegerLength()
@@ -132,7 +135,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testFirstBitNotSet()
     {
@@ -141,7 +144,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testSecondBitNotSet()
     {
@@ -150,7 +153,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testThirdBitNotSet()
     {
@@ -159,7 +162,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testFourthBitSet()
     {
@@ -168,7 +171,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testFifthBitSet()
     {
@@ -177,7 +180,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testSixthBitSet()
     {
@@ -186,7 +189,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testSeventhBitNotSet()
     {
@@ -195,7 +198,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testEightBitNotSet()
     {
@@ -204,7 +207,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testNinthBitNotSet()
     {
@@ -213,7 +216,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testTenthBitNotSet()
     {
@@ -222,7 +225,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testEleventhBitNotSet()
     {
@@ -231,7 +234,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testTwelfthBitSet()
     {
@@ -240,7 +243,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testUnsetReversesASet()
     {
@@ -250,7 +253,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testUnsetReversesASetBeyondOneByte()
     {
@@ -260,7 +263,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testSettingFalseToOffset()
     {
@@ -270,7 +273,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testIssetReturnsTrueAValueThatIsSet()
     {
@@ -279,7 +282,7 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testIssetReturnsTrueAValueThatIsNotSet()
     {
@@ -288,12 +291,58 @@ class BitArrayTest extends PHPUnit_Framework_TestCase
 
     /**
      * @group BloomFilter
-     * @covers Pleo\BloomFilter\BitArray
+     * @covers \Pleo\BloomFilter\BitArray
      */
     public function testCount()
     {
         $expected = 12;
         $actual = count($this->arr);
         $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @group BloomFilter
+     * @covers \Pleo\BloomFilter\BitArray
+     */
+    public function testByteLength()
+    {
+        $expected = 2;
+        $actual = $this->arr->byteLength();
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @group BloomFilter
+     * @covers \Pleo\BloomFilter\BitArray
+     */
+    public function testJsonSerialize()
+    {
+        $expected = '{"len":12,"arr":"OAg="}';
+        $actual = json_encode($this->arr);
+        $this->assertJsonStringEqualsJsonString($expected, $actual);
+    }
+
+    /**
+     * @group BloomFilter
+     * @covers \Pleo\BloomFilter\BitArray
+     */
+    public function testJsonDeserialize()
+    {
+        $expected = serialize($this->arr);
+        $actual = serialize(BitArray::initFromJson(json_decode(json_encode($this->arr), true)));
+        $this->assertSame($expected, $actual);
+    }
+
+    /**
+     * @group BloomFilter
+     * @covers \Pleo\BloomFilter\BitArray
+     */
+    public function testNegativeJsonDeserialize()
+    {
+        $expected = serialize($this->arr);
+        $tmp = json_decode(json_encode($this->arr), true);
+        $tmp['arr'] = base64_encode(chr(0) . chr(0));
+        $actual = serialize(BitArray::initFromJson($tmp));
+        $this->assertNotSame($expected, $actual);
     }
 }
