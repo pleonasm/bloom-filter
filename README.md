@@ -39,9 +39,12 @@ use Pleo\BloomFilter\BloomFilter;
 $approximateItemCount = 100000;
 $falsePositiveProbability = 0.001;
 
-// Creates a bloom filter with a backing bit array that's about 1.4 million
-// bits, or about 180KB in size.
+$before = memory_get_usage();
 $bf = BloomFilter::init($approximateItemCount, $falsePositiveProbability);
+$after = memory_get_usage();
+// if this were a 100,000 item array, we would be looking at about 4MB of
+// space used instead of the 200k or so this uses.
+echo ($after - $before) . "\n";
 
 $bf->add('item1');
 $bf->add('item2');
@@ -53,15 +56,18 @@ $bf->exists('item3'); // true
 
 // The following call will return false with a 0.1% probability of
 // being true as long as the amount of items in the filter are < 100000
-$bf->exists('non-existing-item');
+$bf->exists('non-existing-item'); // false
 
 $serialized = json_encode($bf); // you can store/transfer this places!
 unset($bf);
 
+// Re-hydrate the object this way.
 $bf = BloomFilter::initFromJson(json_decode($serialized, true));
-unset($serialized);
 
-// The $bf variable is right back to where it was before serialization
+$bf->exists('item1'); // still true
+$bf->exists('item2'); // still true
+$bf->exists('item3'); // still true
+$bf->exists('non-existing-item'); // still false
 ```
 
 ### Warnings On Serialization ###
