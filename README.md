@@ -84,7 +84,8 @@ serialization.
 
 ## Requirements ##
 
-This project requires PHP 5.4 or newer.
+This project requires PHP 7.1 or newer. That said, version 1.0.2 of
+bloom-filter is available for PHP 5.4 to 7.0 and will work just fine.
 
 ## License ##
 
