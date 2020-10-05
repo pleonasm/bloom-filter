@@ -11,7 +11,6 @@ use PHPUnit\Framework\TestCase;
 class BloomFilterTest extends TestCase
 {
     /**
-     * @group BloomFilter
      * @covers \Pleo\BloomFilter\BloomFilter
      */
     public function testAddToFilter()
@@ -26,7 +25,6 @@ class BloomFilterTest extends TestCase
     }
 
     /**
-     * @group BloomFilter
      * @covers \Pleo\BloomFilter\BloomFilter
      */
     public function testCleanFilterDoesNotShowItemAsExisting()
@@ -41,7 +39,6 @@ class BloomFilterTest extends TestCase
      * @param BloomFilter $bf
      * @return BloomFilter
      * @depends testCleanFilterDoesNotShowItemAsExisting
-     * @group BloomFilter
      * @covers \Pleo\BloomFilter\BloomFilter
      */
     public function testAddItemToBloomFilter($bf)
@@ -53,7 +50,6 @@ class BloomFilterTest extends TestCase
     }
 
     /**
-     * @group BloomFilter
      * @covers \Pleo\BloomFilter\BloomFilter
      */
     public function testJsonSerialize()

@@ -1,6 +1,6 @@
 <?php
 /**
- * @copyright 2013,2017 Matthew Nagi
+ * @copyright 2013-2020 Matthew Nagi
  * @license http://opensource.org/licenses/BSD-2-Clause BSD 2-Clause License
  */
 
@@ -17,7 +17,7 @@ class BitArrayTest extends TestCase
      */
     private $arr;
 
-    public function setUp()
+    protected function setUp(): void
     {
         $this->arr = BitArray::init(12);
         $this->arr[3] = true;
@@ -29,50 +29,55 @@ class BitArrayTest extends TestCase
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\BitArray
-     * @expectedException RangeException
      */
     public function testThrowErrorIfBitArrayInitializedWithNegativeLength()
     {
+        $this->expectException(RangeException::class);
         BitArray::init(-3);
     }
 
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\BitArray
-     * @expectedException UnexpectedValueException
      */
     public function testThrowErrorIfBitArrayConstrutectedWithNonIntegerLength()
     {
+        $this->expectException(UnexpectedValueException::class);
         BitArray::init('big');
     }
 
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\BitArray
-     * @expectedException RangeException
      */
     public function testThrowErrorIfAccessGivenNegativeLength()
     {
+        $this->expectException(RangeException::class);
         $this->arr[-3];
     }
 
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\BitArray
-     * @expectedException RangeException
      */
     public function testThrowErrorIfAccessGivenOffsetGreaterThanLength()
     {
-        $this->arr[12];
+        try {
+            $this->arr[12];
+        } catch (RangeException $e) {
+            $this->assertTrue(true);
+            return;
+        }
+        $this->assertTrue(false);
     }
 
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\BitArray
-     * @expectedException UnexpectedValueException
      */
     public function testThrowErrorIfAccessGivenNonIntegerLength()
     {
+        $this->expectException(UnexpectedValueException::class);
         $this->arr['big'];
     }
 
@@ -106,30 +111,30 @@ class BitArrayTest extends TestCase
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\BitArray
-     * @expectedException RangeException
      */
     public function testThrowErrorIfUnsetGivenNegativeLength()
     {
+        $this->expectException(RangeException::class);
         unset($this->arr[-3]);
     }
 
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\BitArray
-     * @expectedException RangeException
      */
     public function testThrowErrorIfUnsetGivenOffsetGreaterThanLength()
     {
+        $this->expectException(RangeException::class);
         unset($this->arr[12]);
     }
 
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\BitArray
-     * @expectedException UnexpectedValueException
      */
     public function testThrowErrorIfUnsetGivenNonIntegerLength()
     {
+        $this->expectException(UnexpectedValueException::class);
         unset($this->arr['big']);
     }
 

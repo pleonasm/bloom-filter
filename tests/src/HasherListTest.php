@@ -15,49 +15,30 @@ class HasherListTest extends TestCase
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\HasherList
-     * @expectedException RangeException
-     */
-    public function testHasherListFailsWhenMaxCountGreaterThanHashMaxValue()
-    {
-        if (PHP_INT_SIZE === 4) {
-            // there are no hash algorithms in PHP that produce hashes smaller
-            // than 32 bits. Since we're not allowing bit arrays larger than
-            // the largest word size anyway, there would be no way to have a
-            // hash be 'too small' in the 32 bit case.
-            $this->markTestSkipped();
-            return;
-        }
-
-        new HasherList('adler32', 3, pow(2, 40));
-    }
-
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\HasherList
-     * @expectedException RangeException
      */
     public function testHasherListFailsWhenNegativeMaxValue()
     {
+        $this->expectException(RangeException::class);
         new HasherList('sha1', 3, -2);
     }
 
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\HasherList
-     * @expectedException RangeException
      */
     public function testHasherListFailsWhenNegativeCount()
     {
+        $this->expectException(RangeException::class);
         new HasherList('sha1', -3, 200);
     }
 
     /**
      * @group BloomFilter
      * @covers \Pleo\BloomFilter\HasherList
-     * @expectedException RuntimeException
      */
     public function testInvalidHashAlgo()
     {
+        $this->expectException(RuntimeException::class);
         new HasherList('this-is-not-valid', 3, 200);
     }
 
