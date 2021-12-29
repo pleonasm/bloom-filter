@@ -9,6 +9,7 @@ namespace Pleo\BloomFilter;
 use PHPUnit\Framework\TestCase;
 use RangeException;
 use UnexpectedValueException;
+use TypeError;
 
 class BitArrayTest extends TestCase
 {
@@ -42,7 +43,7 @@ class BitArrayTest extends TestCase
      */
     public function testThrowErrorIfBitArrayConstrutectedWithNonIntegerLength()
     {
-        $this->expectException(UnexpectedValueException::class);
+        $this->expectException(TypeError::class);
         BitArray::init('big');
     }
 
