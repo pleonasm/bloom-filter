@@ -12,22 +12,22 @@ use RuntimeException;
 
 class HasherList implements JsonSerializable
 {
-    private $algo;
-    private $count;
-    private $maxResult;
+    private string $algo;
+    private int $count;
+    private int $maxResult;
 
     /**
      * @param array $data The result of json_decode()ing a json_encode()ed
      *    instance of this class. Note to always decode with the second
      *    argument as true.
-     * @return HasherList
+     * @return static
      */
-    public static function initFromJson(array $data)
+    public static function initFromJson(array $data): static
     {
         return new static($data['algo'], $data['count'], $data['max']);
     }
 
-    private static function hashValidation($algo, $maxResult)
+    private static function hashValidation($algo, $maxResult): void
     {
         $testHash = @hash_hmac($algo, 'test', 'key', true);
 
@@ -41,7 +41,7 @@ class HasherList implements JsonSerializable
      * @param int $count
      * @param int $maxResult
      */
-    public function __construct($algo, $count, $maxResult)
+    public function __construct(string $algo, int $count, int $maxResult)
     {
         if ($maxResult <= 0) {
             throw new RangeException("Your maxResult value must be an integer greater than 0");
@@ -61,7 +61,7 @@ class HasherList implements JsonSerializable
      * @param string $value
      * @return int[] An array of $this->count ints that are between 0 and $this->maxResult
      */
-    public function hash($value)
+    public function hash(string $value): array
     {
         $returns = [];
         for ($i = 0; $i < $this->count; $i++) {
@@ -87,9 +87,9 @@ class HasherList implements JsonSerializable
     }
 
     /**
-     * @return array
+     * @return array{algo: string, count: int, max: int}
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'algo' => $this->algo,
