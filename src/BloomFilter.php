@@ -13,23 +13,23 @@ use JsonSerializable;
  */
 class BloomFilter implements JsonSerializable
 {
-    const HASH_ALGO = 'sha1';
+    public const HASH_ALGO = 'sha1';
 
     /**
      * @var BitArray
      */
-    private $ba;
+    private BitArray $ba;
 
     /**
      * @var HasherList
      */
-    private $hashers;
+    private HasherList $hashers;
 
     /**
      * @param array $data
-     * @return BloomFilter
+     * @return static
      */
-    public static function initFromJson(array $data)
+    public static function initFromJson(array $data): static
     {
         return new static(BitArray::initFromJson($data['bit_array']), HasherList::initFromJson($data['hashers']));
     }
@@ -37,9 +37,9 @@ class BloomFilter implements JsonSerializable
     /**
      * @param int $approxSize
      * @param float $falsePosProb
-     * @return BloomFilter
+     * @return static
      */
-    public static function init($approxSize, $falsePosProb)
+    public static function init(int $approxSize, float $falsePosProb): static
     {
         $baSize = self::optimalBitArraySize($approxSize, $falsePosProb);
         $ba = BitArray::init($baSize);
@@ -55,9 +55,9 @@ class BloomFilter implements JsonSerializable
      * @param float $falsePositiveProbability
      * @return int
      */
-    private static function optimalBitArraySize($approxSetSize, $falsePositiveProbability)
+    private static function optimalBitArraySize(int $approxSetSize, float $falsePositiveProbability): int
     {
-        return (int) round((($approxSetSize * log($falsePositiveProbability)) / pow(log(2), 2)) * -1);
+        return (int) round((($approxSetSize * log($falsePositiveProbability)) / (log(2) ** 2)) * -1);
     }
 
     /**
@@ -65,7 +65,7 @@ class BloomFilter implements JsonSerializable
      * @param int $bitArraySize
      * @return int
      */
-    private static function optimalHasherCount($approxSetSize, $bitArraySize)
+    private static function optimalHasherCount(int $approxSetSize, int $bitArraySize): int
     {
         return (int) round(($bitArraySize / $approxSetSize) * log(2));
     }
@@ -86,7 +86,7 @@ class BloomFilter implements JsonSerializable
      * @param string $item
      * @return void
      */
-    public function add($item)
+    public function add(string $item): void
     {
         $vals = $this->hashers->hash($item);
         foreach ($vals as $bitLoc) {
@@ -98,7 +98,7 @@ class BloomFilter implements JsonSerializable
      * @param string $item
      * @return bool
      */
-    public function exists($item)
+    public function exists(string $item): bool
     {
         $exists = true;
         $vals = $this->hashers->hash($item);
@@ -112,9 +112,9 @@ class BloomFilter implements JsonSerializable
     }
 
     /**
-     * @return array
+     * @return array{bit_array: BitArray, hashers: HasherList}
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'bit_array' => $this->ba,

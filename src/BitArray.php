@@ -17,24 +17,24 @@ use UnexpectedValueException;
  */
 class BitArray implements ArrayAccess, Countable, JsonSerializable
 {
-    const BITS_IN_BYTE = 8;
+    public const BITS_IN_BYTE = 8;
 
     /**
      * @var int
      */
-    private $length;
+    private int $length;
 
     /**
      * @var string
      */
-    private $data;
+    private string $data;
 
     /**
      * @param array $decodedJson Should be passed the return from
      *    $this->jsonSerialize() to re-create the object.
      * @return BitArray
      */
-    public static function initFromJson(array $decodedJson)
+    public static function initFromJson(array $decodedJson): static
     {
         return new static(base64_decode($decodedJson['arr']), $decodedJson['len']);
     }
@@ -43,7 +43,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @param int $length The length in bits of the bit array
      * @return BitArray
      */
-    public static function init($length)
+    public static function init(int $length): BitArray
     {
         static::checkPositiveInt($length);
         $lengthInBytes = (int) ceil($length / static::BITS_IN_BYTE);
@@ -54,7 +54,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     /**
      * @param mixed $val
      */
-    private static function checkPositiveInt($val)
+    private static function checkPositiveInt(mixed $val): void
     {
         if (!is_int($val)) {
             throw new UnexpectedValueException('Value must be an integer.');
@@ -69,7 +69,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @param string $data The raw bytes of the bit array
      * @param int $bitLength
      */
-    public function __construct($data, $bitLength)
+    public function __construct(string $data, int $bitLength)
     {
         // need to check string here
         // need to check or truncate to $bitlength
@@ -78,10 +78,10 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     }
 
     /**
-     * @param int $offset
+     * @param mixed $offset
      * @return bool
      */
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         if (!is_int($offset)) {
             return false;
@@ -99,20 +99,19 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     }
 
     /**
-     * @param int $offset
-     * @throws UnexpectedValueException
-     * @throws RangeException
+     * @param mixed $offset
      * @return bool
-     */
-    public function offsetGet($offset)
+     * @throws RangeException
+     * @throws UnexpectedValueException
+    */
+    public function offsetGet(mixed $offset): bool
     {
         $this->isValidOffset($offset);
 
         $byte = $this->offsetToByte($offset);
         $byte = ord($this->data[$byte]);
-        $bit = (bool) ($this->finalBitPos($offset) & $byte);
 
-        return $bit;
+        return (bool) ($this->finalBitPos($offset) & $byte);
     }
 
     /**
@@ -122,7 +121,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @throws RangeException
      * @return void
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $this->isValidOffset($offset);
         $value = (bool) $value;
@@ -146,7 +145,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @throws RangeException
      * @return void
      */
-    public function offsetUnset($offset)
+    public function offsetUnset(mixed $offset): void
     {
         $this->offsetSet($offset, false);
     }
@@ -156,7 +155,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      *
      * @return int Returns the total length in bits of the array
      */
-    public function count()
+    public function count(): int
     {
         return $this->length;
     }
@@ -164,7 +163,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     /**
      * @return int Returns the total byte length of the bit array
      */
-    public function byteLength()
+    public function byteLength(): int
     {
         return strlen($this->data);
     }
@@ -175,7 +174,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @throws UnexpectedValueException
      * @return void
      */
-    private function isValidOffset($val)
+    private function isValidOffset(mixed $val): void
     {
         static::checkPositiveInt($val);
 
@@ -188,7 +187,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @param int $offset
      * @return int
      */
-    private function offsetToByte($offset)
+    private function offsetToByte(int $offset): int
     {
         return (int) floor($offset / self::BITS_IN_BYTE);
     }
@@ -197,15 +196,15 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @param int $offset
      * @return int
      */
-    private function finalBitPos($offset)
+    private function finalBitPos(int $offset): int
     {
-        return (int) pow(2, $offset % self::BITS_IN_BYTE);
+        return 2 ** ($offset % self::BITS_IN_BYTE);
     }
 
     /**
-     * @return array
+     * @return array{len: int, arr: string}
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'len' => $this->length,
