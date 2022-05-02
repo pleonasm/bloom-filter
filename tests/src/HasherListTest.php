@@ -38,7 +38,11 @@ class HasherListTest extends TestCase
      */
     public function testInvalidHashAlgo()
     {
-        $this->expectException(RuntimeException::class);
+        if ( PHP_VERSION_ID > 80000 ) {
+            $this->expectException(\ValueError::class);
+        } else {
+            $this->expectException(\RuntimeException::class);
+        }
         new HasherList('this-is-not-valid', 3, 200);
     }
 
