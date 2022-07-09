@@ -114,8 +114,7 @@ class BloomFilter implements JsonSerializable
     /**
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize():array
     {
         return [
             'bit_array' => $this->ba,
