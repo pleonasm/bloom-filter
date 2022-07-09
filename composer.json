@@ -20,6 +20,9 @@
         "phpunit/phpunit": "^6.5 || ^7.5 || ^8.5 || ^9.4",
         "php-coveralls/php-coveralls": "^2.0"
     },
+    "scripts": {
+        "test": "phpunit"
+    },
     "autoload": {
         "psr-4": { "Pleo\\BloomFilter\\": "src/" }
     }

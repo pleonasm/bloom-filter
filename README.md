@@ -1,6 +1,8 @@
+[![CI Status](https://github.com/pleonasm/bloom-filter/actions/workflows/CI.yaml/badge.svg)](https://github.com/pleonasm/bloom-filter/actions/workflows/CI.yaml)
+
 # A Bloom Filter for PHP #
 
-This is a well tested implementation of a [Bloom Filter](http://en.wikipedia.org/wiki/Bloom_filter)
+This is a well tested implementation of a [Bloom Filter](https://en.wikipedia.org/wiki/Bloom_filter)
 for PHP. It has the following features:
 
 1. Efficient memory use for bit array (as efficient as PHP can be anyway).
@@ -17,7 +19,7 @@ your path or in your project).
 
 Put the following in your package.json:
 
-```javascript
+```json
 {
     "require": {
         "pleonasm/bloom-filter": "*"

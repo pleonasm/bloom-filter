@@ -1,0 +1,40 @@
+name: CI
+on:
+  - push
+  - pull_request
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  php:
+    strategy:
+      matrix:
+        include:
+          # Has php7.2-8.1 and composer 2 pre-installed
+          # https://github.com/actions/virtual-environments/blob/ubuntu18/20220626.1/images/linux/Ubuntu1804-Readme.md#php
+          - os: ubuntu-18.04
+            php: "7.2"
+          - os: ubuntu-18.04
+            php: "7.3"
+          # Has php7.4-8.1 and composer 2 pre-installed
+          # https://github.com/actions/virtual-environments/blob/ubuntu20/20220626.1/images/linux/Ubuntu2004-Readme.md#php
+          - os: ubuntu-20.04
+            php: "7.4"
+          - os: ubuntu-20.04
+            php: "8.0"
+          - os: ubuntu-20.04
+            php: "8.1"
+    # Use "PHP 0.0" as job name instead of "php (ubuntu-, 0.0)"
+    name: PHP ${{ matrix.php }}
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use PHP ${{ matrix.php }}
+        run: sudo update-alternatives --set php /usr/bin/php${{ matrix.php }}
+
+      - name: composer install
+        run: composer install
+
+      - name: composer test
+        run: composer test
