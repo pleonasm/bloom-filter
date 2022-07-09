@@ -81,8 +81,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @param int $offset
      * @return bool
      */
-    #[\ReturnTypeWillChange]
-    public function offsetExists($offset)
+    public function offsetExists($offset):bool
     {
         if (!is_int($offset)) {
             return false;
@@ -124,8 +123,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @throws RangeException
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value):void
     {
         $this->isValidOffset($offset);
         $value = (bool) $value;
@@ -149,8 +147,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      * @throws RangeException
      * @return void
      */
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($offset)
+    public function offsetUnset($offset):void
     {
         $this->offsetSet($offset, false);
     }
@@ -160,8 +157,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
      *
      * @return int Returns the total length in bits of the array
      */
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count():int
     {
         return $this->length;
     }
@@ -210,8 +206,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     /**
      * @return array
      */
-    #[\ReturnTypeWillChange]
-    public function jsonSerialize()
+    public function jsonSerialize():array
     {
         return [
             'len' => $this->length,
