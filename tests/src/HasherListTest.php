@@ -8,7 +8,7 @@ namespace Pleo\BloomFilter;
 
 use PHPUnit\Framework\TestCase;
 use RangeException;
-use RuntimeException;
+use ValueError;
 
 class HasherListTest extends TestCase
 {
@@ -38,11 +38,7 @@ class HasherListTest extends TestCase
      */
     public function testInvalidHashAlgo()
     {
-        if ( PHP_VERSION_ID > 80000 ) {
-            $this->expectException(\ValueError::class);
-        } else {
-            $this->expectException(\RuntimeException::class);
-        }
+        $this->expectException(ValueError::class);
         new HasherList('this-is-not-valid', 3, 200);
     }
 
