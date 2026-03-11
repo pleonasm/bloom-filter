@@ -18,7 +18,15 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^6.5 || ^7.5 || ^8.5 || ^9.4",
-        "php-coveralls/php-coveralls": "^2.0"
+        "php-coveralls/php-coveralls": "^2.0",
+        "php-parallel-lint/php-parallel-lint": "^1.4"
+    },
+    "scripts": {
+        "test": [
+            "@lint",
+            "phpunit"
+        ],
+        "lint": "parallel-lint --exclude vendor ."
     },
     "autoload": {
         "psr-4": { "Pleo\\BloomFilter\\": "src/" }
