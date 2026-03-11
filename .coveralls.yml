@@ -1,2 +1,0 @@
-coverage_clover: build/coverage.xml
-json_path: build/coveralls.json
