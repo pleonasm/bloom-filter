@@ -15,30 +15,11 @@ class BloomFilter implements JsonSerializable
 {
     public const HASH_ALGO = 'sha1';
 
-    /**
-     * @var BitArray
-     */
-    private BitArray $ba;
-
-    /**
-     * @var HasherList
-     */
-    private HasherList $hashers;
-
-    /**
-     * @param array $data
-     * @return static
-     */
     public static function initFromJson(array $data): static
     {
         return new static(BitArray::initFromJson($data['bit_array']), HasherList::initFromJson($data['hashers']));
     }
 
-    /**
-     * @param int $approxSize
-     * @param float $falsePosProb
-     * @return static
-     */
     public static function init(int $approxSize, float $falsePosProb): static
     {
         $baSize = self::optimalBitArraySize($approxSize, $falsePosProb);
@@ -50,21 +31,11 @@ class BloomFilter implements JsonSerializable
         return new static($ba, $hashers);
     }
 
-    /**
-     * @param int $approxSetSize
-     * @param float $falsePositiveProbability
-     * @return int
-     */
     private static function optimalBitArraySize(int $approxSetSize, float $falsePositiveProbability): int
     {
         return (int) round((($approxSetSize * log($falsePositiveProbability)) / (log(2) ** 2)) * -1);
     }
 
-    /**
-     * @param int $approxSetSize
-     * @param int $bitArraySize
-     * @return int
-     */
     private static function optimalHasherCount(int $approxSetSize, int $bitArraySize): int
     {
         return (int) round(($bitArraySize / $approxSetSize) * log(2));
@@ -72,20 +43,11 @@ class BloomFilter implements JsonSerializable
 
     /**
      * In general, do not use the constructor directly
-     *
-     * @param BitArray $ba
-     * @param HasherList $hashers
      */
-    public function __construct(BitArray $ba, HasherList $hashers)
+    public function __construct(private BitArray $ba, private HasherList $hashers)
     {
-        $this->ba = $ba;
-        $this->hashers = $hashers;
     }
 
-    /**
-     * @param string $item
-     * @return void
-     */
     public function add(string $item): void
     {
         $vals = $this->hashers->hash($item);
@@ -94,10 +56,6 @@ class BloomFilter implements JsonSerializable
         }
     }
 
-    /**
-     * @param string $item
-     * @return bool
-     */
     public function exists(string $item): bool
     {
         $exists = true;

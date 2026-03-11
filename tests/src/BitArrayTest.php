@@ -11,12 +11,13 @@ use RangeException;
 use UnexpectedValueException;
 use TypeError;
 
+/**
+ * @group BloomFilter
+ * @covers \Pleo\BloomFilter\BitArray
+ */
 class BitArrayTest extends TestCase
 {
-    /**
-     * @var BitArray
-     */
-    private $arr;
+    private BitArray $arr;
 
     protected function setUp(): void
     {
@@ -27,40 +28,24 @@ class BitArrayTest extends TestCase
         $this->arr[11] = true;
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThrowErrorIfBitArrayInitializedWithNegativeLength()
     {
         $this->expectException(RangeException::class);
         BitArray::init(-3);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThrowErrorIfBitArrayConstrutectedWithNonIntegerLength()
     {
         $this->expectException(TypeError::class);
         BitArray::init('big');
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThrowErrorIfAccessGivenNegativeLength()
     {
         $this->expectException(RangeException::class);
         $this->arr[-3];
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThrowErrorIfAccessGivenOffsetGreaterThanLength()
     {
         try {
@@ -72,233 +57,133 @@ class BitArrayTest extends TestCase
         $this->assertTrue(false);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThrowErrorIfAccessGivenNonIntegerLength()
     {
         $this->expectException(UnexpectedValueException::class);
         $this->arr['big'];
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testIssetReturnsFalseForValueLessThanBounds()
     {
         $this->assertFalse(isset($this->arr[-3]));
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testIssetReturnsFalseForValueGreaterThanBounds()
     {
         $this->assertFalse(isset($this->arr[18]));
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testIssetReturnsFalseForNonIntegerOffset()
     {
         $this->assertFalse(isset($this->arr['big']));
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThrowErrorIfUnsetGivenNegativeLength()
     {
         $this->expectException(RangeException::class);
         unset($this->arr[-3]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThrowErrorIfUnsetGivenOffsetGreaterThanLength()
     {
         $this->expectException(RangeException::class);
         unset($this->arr[12]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThrowErrorIfUnsetGivenNonIntegerLength()
     {
         $this->expectException(UnexpectedValueException::class);
         unset($this->arr['big']);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testFirstBitNotSet()
     {
         $this->assertFalse($this->arr[0]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testSecondBitNotSet()
     {
         $this->assertFalse($this->arr[1]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testThirdBitNotSet()
     {
         $this->assertFalse($this->arr[2]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testFourthBitSet()
     {
         $this->assertTrue($this->arr[3]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testFifthBitSet()
     {
         $this->assertTrue($this->arr[4]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testSixthBitSet()
     {
         $this->assertTrue($this->arr[5]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testSeventhBitNotSet()
     {
         $this->assertFalse($this->arr[6]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testEightBitNotSet()
     {
         $this->assertFalse($this->arr[7]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testNinthBitNotSet()
     {
         $this->assertFalse($this->arr[8]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testTenthBitNotSet()
     {
         $this->assertFalse($this->arr[9]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testEleventhBitNotSet()
     {
         $this->assertFalse($this->arr[10]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testTwelfthBitSet()
     {
         $this->assertTrue($this->arr[11]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testUnsetReversesASet()
     {
         unset($this->arr[4]);
         $this->assertFalse($this->arr[4]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testUnsetReversesASetBeyondOneByte()
     {
         unset($this->arr[11]);
         $this->assertFalse($this->arr[11]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testSettingFalseToOffset()
     {
         $this->arr[5] = false;
         $this->assertFalse($this->arr[5]);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testIssetReturnsTrueAValueThatIsSet()
     {
         $this->assertTrue(isset($this->arr[11]));
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testIssetReturnsTrueAValueThatIsNotSet()
     {
         $this->assertTrue(isset($this->arr[0]));
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testCount()
     {
         $expected = 12;
@@ -306,10 +191,6 @@ class BitArrayTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testByteLength()
     {
         $expected = 2;
@@ -317,10 +198,6 @@ class BitArrayTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testJsonSerialize()
     {
         $expected = '{"len":12,"arr":"OAg="}';
@@ -328,10 +205,6 @@ class BitArrayTest extends TestCase
         $this->assertJsonStringEqualsJsonString($expected, $actual);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testJsonDeserialize()
     {
         $expected = serialize($this->arr);
@@ -339,10 +212,6 @@ class BitArrayTest extends TestCase
         $this->assertSame($expected, $actual);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\BitArray
-     */
     public function testNegativeJsonDeserialize()
     {
         $expected = serialize($this->arr);

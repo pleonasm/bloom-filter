@@ -8,11 +8,11 @@ namespace Pleo\BloomFilter;
 
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @covers \Pleo\BloomFilter\BloomFilter
+ */
 class BloomFilterTest extends TestCase
 {
-    /**
-     * @covers \Pleo\BloomFilter\BloomFilter
-     */
     public function testAddToFilter()
     {
         $ba = BitArray::init(50);
@@ -24,9 +24,6 @@ class BloomFilterTest extends TestCase
         $this->assertFalse($bf->exists('fizzbuzz'));
     }
 
-    /**
-     * @covers \Pleo\BloomFilter\BloomFilter
-     */
     public function testCleanFilterDoesNotShowItemAsExisting()
     {
         $bf = BloomFilter::init(100, 0.001);
@@ -36,12 +33,9 @@ class BloomFilterTest extends TestCase
     }
 
     /**
-     * @param BloomFilter $bf
-     * @return BloomFilter
      * @depends testCleanFilterDoesNotShowItemAsExisting
-     * @covers \Pleo\BloomFilter\BloomFilter
      */
-    public function testAddItemToBloomFilter($bf)
+    public function testAddItemToBloomFilter(BloomFilter $bf): BloomFilter
     {
         $bf->add('Paul Atradies');
         $this->assertTrue($bf->exists('Paul Atradies'));
@@ -49,9 +43,6 @@ class BloomFilterTest extends TestCase
         return $bf;
     }
 
-    /**
-     * @covers \Pleo\BloomFilter\BloomFilter
-     */
     public function testJsonSerialize()
     {
         $sut = BloomFilter::init(100, 0.001);

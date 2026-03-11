@@ -10,42 +10,33 @@ use PHPUnit\Framework\TestCase;
 use RangeException;
 use ValueError;
 
+/**
+ * @group BloomFilter
+ * @covers \Pleo\BloomFilter\HasherList
+ */
 class HasherListTest extends TestCase
 {
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\HasherList
-     */
     public function testHasherListFailsWhenNegativeMaxValue()
     {
         $this->expectException(RangeException::class);
         new HasherList('sha1', 3, -2);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\HasherList
-     */
+
     public function testHasherListFailsWhenNegativeCount()
     {
         $this->expectException(RangeException::class);
         new HasherList('sha1', -3, 200);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\HasherList
-     */
+
     public function testInvalidHashAlgo()
     {
         $this->expectException(ValueError::class);
         new HasherList('this-is-not-valid', 3, 200);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\HasherList
-     */
+
     public function testHashProducesExpectedNumbers()
     {
         $expected = [10, 85, 80];
@@ -55,10 +46,7 @@ class HasherListTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\HasherList
-     */
+
     public function testJsonSerialize()
     {
         $sut = new HasherList('sha256', 7, 100000);
@@ -68,10 +56,7 @@ class HasherListTest extends TestCase
         $this->assertJsonStringEqualsJsonString($expected, $actual);
     }
 
-    /**
-     * @group BloomFilter
-     * @covers \Pleo\BloomFilter\HasherList
-     */
+
     public function testJsonDeserialize()
     {
         $sut = new HasherList('sha256', 7, 100000);

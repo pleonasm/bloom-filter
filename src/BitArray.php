@@ -20,16 +20,6 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     public const BITS_IN_BYTE = 8;
 
     /**
-     * @var int
-     */
-    private int $length;
-
-    /**
-     * @var string
-     */
-    private string $data;
-
-    /**
      * @param array $decodedJson Should be passed the return from
      *    $this->jsonSerialize() to re-create the object.
      * @return BitArray
@@ -51,9 +41,6 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
         return new static($data, $length);
     }
 
-    /**
-     * @param mixed $val
-     */
     private static function checkPositiveInt(mixed $val): void
     {
         if (!is_int($val)) {
@@ -67,20 +54,14 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
 
     /**
      * @param string $data The raw bytes of the bit array
-     * @param int $bitLength
+     * @param int $length
      */
-    public function __construct(string $data, int $bitLength)
+    public function __construct(private string $data, private int $length)
     {
         // need to check string here
-        // need to check or truncate to $bitlength
-        $this->length = $bitLength;
-        $this->data = $data;
+        // need to check or truncate to $length
     }
 
-    /**
-     * @param mixed $offset
-     * @return bool
-     */
     public function offsetExists(mixed $offset): bool
     {
         if (!is_int($offset)) {
@@ -99,8 +80,6 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     }
 
     /**
-     * @param mixed $offset
-     * @return bool
      * @throws RangeException
      * @throws UnexpectedValueException
     */
@@ -115,11 +94,8 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     }
 
     /**
-     * @param int $offset
-     * @param bool $value
      * @throws UnexpectedValueException
      * @throws RangeException
-     * @return void
      */
     public function offsetSet(mixed $offset, mixed $value): void
     {
@@ -140,10 +116,8 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     }
 
     /**
-     * @param int $offset
      * @throws UnexpectedValueException
      * @throws RangeException
-     * @return void
      */
     public function offsetUnset(mixed $offset): void
     {
@@ -151,7 +125,7 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     }
 
     /**
-     * Returns the length (amount of bits) of the bit array
+     * Returns the length (number of bits) of the bit array
      *
      * @return int Returns the total length in bits of the array
      */
@@ -169,10 +143,8 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
     }
 
     /**
-     * @param mixed $val
      * @throws RangeException
      * @throws UnexpectedValueException
-     * @return void
      */
     private function isValidOffset(mixed $val): void
     {
@@ -183,19 +155,11 @@ class BitArray implements ArrayAccess, Countable, JsonSerializable
         }
     }
 
-    /**
-     * @param int $offset
-     * @return int
-     */
     private function offsetToByte(int $offset): int
     {
         return (int) floor($offset / self::BITS_IN_BYTE);
     }
 
-    /**
-     * @param int $offset
-     * @return int
-     */
     private function finalBitPos(int $offset): int
     {
         return 2 ** ($offset % self::BITS_IN_BYTE);

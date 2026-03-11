@@ -8,14 +8,9 @@ namespace Pleo\BloomFilter;
 
 use JsonSerializable;
 use RangeException;
-use RuntimeException;
 
 class HasherList implements JsonSerializable
 {
-    private string $algo;
-    private int $count;
-    private int $maxResult;
-
     /**
      * @param array $data The result of json_decode()ing a json_encode()ed
      *    instance of this class. Note to always decode with the second
@@ -27,21 +22,7 @@ class HasherList implements JsonSerializable
         return new static($data['algo'], $data['count'], $data['max']);
     }
 
-    private static function hashValidation($algo, $maxResult): void
-    {
-        $testHash = @hash_hmac($algo, 'test', 'key', true);
-
-        if (false === $testHash) {
-            throw new RuntimeException("The algorithm `$algo` is invalid.");
-        }
-    }
-
-    /**
-     * @param string $algo
-     * @param int $count
-     * @param int $maxResult
-     */
-    public function __construct(string $algo, int $count, int $maxResult)
+    public function __construct(private string $algo, private int $count, private int $maxResult)
     {
         if ($maxResult <= 0) {
             throw new RangeException("Your maxResult value must be an integer greater than 0");
@@ -51,10 +32,7 @@ class HasherList implements JsonSerializable
             throw new RangeException("Your count value must be an integer greater than 0");
         }
 
-        self::hashValidation($algo, $maxResult);
-        $this->algo = $algo;
-        $this->count = $count;
-        $this->maxResult = $maxResult;
+        @hash_hmac($algo, 'test', 'key', true);
     }
 
     /**
