@@ -12,7 +12,7 @@
       <directory>src/</directory>
     </include>
     <report>
-      <clover outputFile="build/coverage.xml" />
+      <clover outputFile="build/logs/clover.xml"/>
       <text outputFile="build/testdox.txt" />
       <html outputDirectory="build/html" />
     </report>

@@ -18,7 +18,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^9.6.34",
-        "php-coveralls/php-coveralls": "^2.0",
         "php-parallel-lint/php-parallel-lint": "^1.4"
     },
     "scripts": {

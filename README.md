@@ -1,4 +1,5 @@
 [![CI Status](https://github.com/pleonasm/bloom-filter/actions/workflows/php.yml/badge.svg)](https://github.com/pleonasm/bloom-filter/actions/workflows/php.yml)
+[![Coverage Status](https://coveralls.io/repos/pleonasm/bloom-filter/badge.png)](https://coveralls.io/r/pleonasm/bloom-filter)
 
 # A Bloom Filter for PHP #
 
