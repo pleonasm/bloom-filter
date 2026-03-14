@@ -3,7 +3,7 @@
 
 # A Bloom Filter for PHP #
 
-This is a well tested implementation of a [Bloom Filter](https://en.wikipedia.org/wiki/Bloom_filter)
+This is a well tested implementation of a [bloom filter](https://en.wikipedia.org/wiki/Bloom_filter)
 for PHP. It has the following features:
 
 1. Efficient memory use for bit array (as efficient as PHP can be anyway).
@@ -15,7 +15,7 @@ for PHP. It has the following features:
 
 ## Installation ##
 
-Install via [Composer](http://getcomposer.org) (make sure you have composer in
+Install via [Composer](https://getcomposer.org) (make sure you have composer in
 your path or in your project).
 
 Put the following in your package.json:
@@ -95,8 +95,11 @@ okay to use even if they don't throw an error in PHP 7.1.
 
 ## Requirements ##
 
-This project requires PHP 7.1 or newer. That said, version 1.0.2 of
-bloom-filter is available for PHP 5.4 to 7.0 and will work just fine.
+The latest release of this project requires PHP 8.0 or newer.
+
+Version 1.0.3 of `pleonasm/bloom-filter` is available for PHP 7.1+.
+
+Version 1.0.2 of `pleonasm/bloom-filter` is available for PHP 5.4 to 7.0.
 
 ## License ##
 
