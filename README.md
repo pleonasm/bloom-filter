@@ -103,4 +103,4 @@ Version 1.0.2 of `pleonasm/bloom-filter` is available for PHP 5.4 to 7.0.
 
 ## License ##
 
-You can find the license for this code in [the LICENSE file](LICENSE).
+You can find the license for this code in the [LICENSE](LICENSE) file.
